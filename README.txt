@@ -22,18 +22,16 @@ py -m pip install cryptography
 py demo.py
 ```
 
-Run tests:
+## Run Tests
 
 ```powershell
 py -m unittest test_certchain -v
 ```
 
-Optional benchmark:
+## Benchmark (Optional)
 
 ```powershell
 py benchmark.py
 ```
 
-If virtual environment activation is blocked, use `.venv\Scripts\python.exe` instead of `py` to install dependencies and run scripts.
-
-**Note:** CertiChain is a custom Python blockchain prototype, not a Solidity/Remix implementation. The included output files are reference examples; rerun the scripts to generate fresh results.
+**Note:** CertiChain is a custom Python blockchain prototype, not a Solidity/Remix implementation. Output files are reference examples; rerun the scripts to generate fresh results.
