@@ -13,4 +13,4 @@ Run:
 Tests:
     python -m unittest test_certchain -v
 
-Note: Custom Python blockchain prototype; not Solidity/Remix-based.
+Note: Custom Python blockchain prototype.
