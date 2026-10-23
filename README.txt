@@ -1,37 +1,20 @@
 # CertiChain
 
-A blockchain-based academic certificate verification system built using Python.
+A Python-based blockchain prototype for academic certificate verification.
 
-## Features
-- Certificate issuance and verification
-- Digital signatures and SHA-256 hashing
-- Proof-of-Work consensus
-- Certificate revocation
-- Tamper detection and blockchain validation
+**Features:** Certificate issuance, verification, revocation, digital signatures, SHA-256 hashing, and tamper detection.
 
-## Requirements
-- Python 3.10+
-- `cryptography`
+**Requirements:** Python 3.10+, `cryptography`
 
-## Setup and Run
-
-```powershell
-py -m venv .venv
-.venv\Scripts\Activate.ps1
+**Run:**
+```bash
 py -m pip install cryptography
 py demo.py
 ```
 
-## Run Tests
-
-```powershell
+**Tests:**
+```bash
 py -m unittest test_certchain -v
 ```
 
-## Benchmark (Optional)
-
-```powershell
-py benchmark.py
-```
-
-**Note:** CertiChain is a custom Python blockchain prototype, not a Solidity/Remix implementation. Output files are reference examples; rerun the scripts to generate fresh results.
+**Note:** Custom Python blockchain prototype; not Solidity/Remix-based.
