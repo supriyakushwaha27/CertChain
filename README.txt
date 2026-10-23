@@ -1,18 +1,39 @@
-CERTCHAIN - QUICK START
+# CertiChain
 
-Requirements: Python 3.10+ and the cryptography package.
+A blockchain-based academic certificate verification system built using Python.
 
-Windows PowerShell steps:
-1. Open this folder in VS Code.
-2. Open Terminal > New Terminal.
-3. Run: py -m venv .venv
-4. Run: .venv\Scripts\Activate.ps1
-   If activation is blocked, use: .venv\Scripts\python.exe -m pip install cryptography
-   and run scripts with .venv\Scripts\python.exe instead.
-5. Install dependency: py -m pip install cryptography
-6. Run demo: py demo.py
-7. Run tests: py -m unittest test_certchain -v
-8. Run benchmark (optional): py benchmark.py
+## Features
+- Certificate issuance and verification
+- Digital signatures and SHA-256 hashing
+- Proof-of-Work consensus
+- Certificate revocation
+- Tamper detection and blockchain validation
 
-The project is a custom Python blockchain prototype. It is not the Solidity/Remix implementation.
-Use demo_output.txt and benchmark_output.txt only as reference examples; rerun scripts to generate fresh results.
+## Requirements
+- Python 3.10+
+- `cryptography`
+
+## Setup and Run
+
+```powershell
+py -m venv .venv
+.venv\Scripts\Activate.ps1
+py -m pip install cryptography
+py demo.py
+```
+
+Run tests:
+
+```powershell
+py -m unittest test_certchain -v
+```
+
+Optional benchmark:
+
+```powershell
+py benchmark.py
+```
+
+If virtual environment activation is blocked, use `.venv\Scripts\python.exe` instead of `py` to install dependencies and run scripts.
+
+**Note:** CertiChain is a custom Python blockchain prototype, not a Solidity/Remix implementation. The included output files are reference examples; rerun the scripts to generate fresh results.
