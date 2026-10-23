@@ -1,0 +1,5 @@
+Issued 500 certificates in 10 blocks of 50: 7.3s total (68.6 certs/s incl. mining)
+Avg block mining time (difficulty 4): 0.13s
+Genuine accepted: 500/500   Forged detected: 100/100   Avg verification: 6 microseconds
+Full-chain re-validation (12 blocks, 501 txs): 0.24s -> True
+On-chain size per certificate: ~527 bytes (hash only; no personal data stored)

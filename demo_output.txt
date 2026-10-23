@@ -1,0 +1,16 @@
+Regulator address : 0x839075da28b5a896ec67079eefc75cc3be02e3a1
+Genesis block hash: 000072a8ac386f0b56aee7aaa63007d6fdca464ec0816002beab71d09ddadb82
+Institution registered: VESIT 0x11a6eb506468d1d8f1b0a221adfcfb811c8091a3
+Pending on Node-B (gossiped from A): 3
+Block 2 mined on Node-B: hash=00006837be33afc1... txs=3 merkle=1a10ea92532f5202...
+Heights  A: 3  B: 3
+
+verify [genuine        ] -> VALID issued by VESIT (tx 24231ee87152...)
+verify [forged grade   ] -> NOT FOUND no matching hash on the ledger (forged or altered document)
+verify [unknown student] -> NOT FOUND no matching hash on the ledger (forged or altered document)
+rejected by smart contract (rogue institution issues): sender is not an approved institution
+rejected by smart contract (rogue adds itself): only the regulator can add institutions
+verify [after revocation ] -> REVOKED issued by VESIT, revoked: degree withdrawn
+
+Validate real chain : (True, 'chain valid: 4 blocks, all hashes, Merkle roots, signatures and rules verified')
+Validate tampered   : (False, 'block 2, tx 7e20a5b6...: invalid signature')

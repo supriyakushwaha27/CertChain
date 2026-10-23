@@ -1,0 +1,262 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>CertChain | Certificate Verification</title>
+    <style>
+      :root {
+        font-family: Arial, sans-serif;
+        color: #e8edf7;
+        background: #0c1220;
+      }
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+      }
+      header {
+        padding: 24px 6%;
+        background: #131c30;
+        border-bottom: 1px solid #293650;
+      }
+      header h1 {
+        margin: 0 0 8px;
+        color: #91b9ff;
+      }
+      header p {
+        margin: 0;
+        color: #aab7cc;
+      }
+      main {
+        max-width: 1100px;
+        margin: auto;
+        padding: 24px;
+      }
+      .stats,
+      .grid {
+        display: grid;
+        gap: 16px;
+      }
+      .stats {
+        grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      }
+      .grid {
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      }
+      .card {
+        background: #151f33;
+        border: 1px solid #293650;
+        border-radius: 12px;
+        padding: 20px;
+        margin-bottom: 18px;
+        min-width: 0;
+      }
+      .stat {
+        font-size: 28px;
+        font-weight: bold;
+        color: #91b9ff;
+      }
+      label {
+        display: block;
+        margin-top: 12px;
+        font-size: 13px;
+        color: #c3cfe1;
+      }
+      input,
+      button {
+        width: 100%;
+        padding: 11px;
+        margin-top: 6px;
+        border-radius: 7px;
+        font: inherit;
+      }
+      input {
+        background: #0c1220;
+        color: white;
+        border: 1px solid #394968;
+      }
+      button {
+        border: 0;
+        background: #477de8;
+        color: white;
+        font-weight: bold;
+        cursor: pointer;
+        margin-top: 16px;
+      }
+      button:hover {
+        background: #6090f5;
+      }
+      .secondary {
+        background: #34435f;
+      }
+      .notice {
+        padding: 13px;
+        margin: 12px 0;
+        border-radius: 8px;
+        overflow-wrap: anywhere;
+      }
+      .success {
+        background: #123c31;
+        color: #a8f0d5;
+      }
+      .error {
+        background: #49232b;
+        color: #ffc1c8;
+      }
+      .small {
+        color: #aab7cc;
+        font-size: 13px;
+      }
+      table {
+        width: 100%;
+        border-collapse: collapse;
+      }
+      th,
+      td {
+        text-align: left;
+        padding: 10px;
+        border-bottom: 1px solid #293650;
+      }
+      th {
+        color: #91b9ff;
+      }
+      .table-wrap {
+        overflow-x: auto;
+      }
+      .hash {
+        overflow-wrap: anywhere;
+        font-size: 12px;
+      }
+      footer {
+        text-align: center;
+        color: #aab7cc;
+        padding: 24px;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <h1>⛓ CertChain</h1>
+      <p>Blockchain-Based Academic Certificate Verification</p>
+    </header>
+
+    <main>
+      {% with messages = get_flashed_messages(with_categories=true) %} {% for
+      category, message in messages %}
+      <div class="notice {{ category }}">{{ message }}</div>
+      {% endfor %} {% endwith %}
+
+      <div class="stats">
+        <div class="card">
+          <div class="small">Registered Certificates</div>
+          <div class="stat">{{ records|length }}</div>
+        </div>
+        <div class="card">
+          <div class="small">Blockchain Height</div>
+          <div class="stat">{{ height }}</div>
+        </div>
+        <div class="card">
+          <div class="small">Approved Issuer</div>
+          <div class="stat" style="font-size: 22px">{{ institution }}</div>
+        </div>
+      </div>
+
+      <div class="grid">
+        <section class="card">
+          <h2>Issue Certificate</h2>
+          <p class="small">
+            Register a certificate hash on the local blockchain.
+          </p>
+          <form action="/issue" method="post">
+            <label>Student Name</label><input name="student" required />
+            <label>Certificate ID</label
+            ><input name="certificate_id" required /> <label>Programme</label
+            ><input name="programme" value="MCA" required /> <label>Grade</label
+            ><input name="grade" required /> <label>Year</label
+            ><input name="year" type="number" value="2027" required />
+            <label>Secret Salt (keep it for verification)</label>
+            <input name="salt" required />
+            <button type="submit">Register Certificate</button>
+          </form>
+        </section>
+
+        <section class="card">
+          <h2>Verify Certificate</h2>
+          <p class="small">
+            Enter the exact details and salt used during registration.
+          </p>
+          <form action="/verify" method="post">
+            <label>Student Name</label><input name="student" required />
+            <label>Certificate ID</label
+            ><input name="certificate_id" required /> <label>Programme</label
+            ><input name="programme" required /> <label>Grade</label
+            ><input name="grade" required /> <label>Year</label
+            ><input name="year" type="number" required />
+            <label>Secret Salt</label><input name="salt" required />
+            <button type="submit">Verify Certificate</button>
+          </form>
+        </section>
+      </div>
+
+      <section class="card">
+        <h2>Registered Certificates</h2>
+        {% if records %}
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Student</th>
+                <th>Course</th>
+                <th>Status</th>
+                <th>Hash</th>
+                <th>Revoke</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for r in records %}
+              <tr>
+                <td>{{ r.certificate_id }}</td>
+                <td>{{ r.student }}</td>
+                <td>{{ r.programme }}</td>
+                <td>{{ "REVOKED" if r.revoked else "VALID" }}</td>
+                <td class="hash">{{ r.hash }}</td>
+                <td>
+                  {% if not r.revoked %}
+                  <form action="/revoke" method="post">
+                    <input
+                      type="hidden"
+                      name="cert_hash"
+                      value="{{ r.hash }}"
+                    />
+                    <input name="reason" placeholder="Reason (optional)" />
+                    <button class="secondary" type="submit">Revoke</button>
+                  </form>
+                  {% else %}—{% endif %}
+                </td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+        {% else %}
+        <p class="small">No certificates registered yet.</p>
+        {% endif %}
+      </section>
+
+      <section class="card">
+        <h2>Block Explorer</h2>
+        <p class="small">Blocks currently stored on this local chain.</p>
+        {% for b in blocks %}
+        <p><strong>Block {{ b.index }}</strong> · Nonce: {{ b.nonce }}</p>
+        <p class="hash">Hash: {{ b.hash }}</p>
+        <p class="hash">Previous: {{ b.prev_hash }}</p>
+        <hr style="border-color: #293650" />
+        {% endfor %}
+      </section>
+    </main>
+    <footer>CertChain · Educational demonstration · Local blockchain</footer>
+  </body>
+</html>
